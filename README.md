@@ -1,8 +1,3 @@
-Here's your project documentation formatted properly as a `README.md`:
-
----
-
-```markdown
 # 🧠 YOLOv11 + Hailo-8L Real-Time Object Detection
 
 This project demonstrates how to use **Ultralytics YOLOv11** to train an object detection model with a **Roboflow-annotated dataset**, convert it to **ONNX**, compile it for the **Hailo-8L AI accelerator**, and run **real-time inference**.
