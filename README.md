@@ -1,105 +1,149 @@
-# 🧠 YOLOv11 + Hailo-8L Real-Time Object Detection
-
-This project demonstrates how to use **Ultralytics YOLOv11** to train an object detection model with a Roboflow-annotated dataset, convert it to ONNX, compile it for **Hailo-8L** AI accelerator, and run real-time inference.
+Here's your project documentation formatted properly as a `README.md`:
 
 ---
 
-## 📁 Dataset: Roboflow + YOLO Format
+```markdown
+# 🧠 YOLOv11 + Hailo-8L Real-Time Object Detection
 
-- Annotated using: [Roboflow](https://roboflow.com)
-- Export format: YOLO (compatible with Ultralytics)
-- Label format per line:
-```
+This project demonstrates how to use **Ultralytics YOLOv11** to train an object detection model with a **Roboflow-annotated dataset**, convert it to **ONNX**, compile it for the **Hailo-8L AI accelerator**, and run **real-time inference**.
 
-\<class\_id> \<x\_center> \<y\_center> <width> <height>  # all values normalized
+---
 
-```
+## 📁 Dataset
 
+- **Source**: Roboflow  
+- **Format**: YOLO (compatible with Ultralytics)
 ### 🏷️ Classes:
 ```
 
 0: Trash
 
+````
+
+---
 
 ## 🏋️ Training with Ultralytics YOLOv11
+
+### 1. Setup Environment
+
+```bash
 python3 -m venv python_yolo
 source python_yolo/bin/activate
-### 1. Install YOLOv11
+````
+
+### 2. Install YOLOv11
 
 ```bash
 pip install ultralytics
-````
+```
 
-> Requires Python 3.8+, PyTorch 1.9+, and a CUDA-compatible GPU for training.
+> **Requirements**: Python 3.8+, PyTorch 1.9+, and a CUDA-compatible GPU for training.
 
-### 2. Train Your Model
-   
+### 3. Train Your Model
+
 ```bash
 yolo train model=yolov11s.pt data=data.yaml epochs=100 imgsz=640
 ```
+
+### Dataset Structure
+
+```
 dataset/
 ├── train/
-│ ├── images/
-│ │ ├── image1.jpg
-│ │ ├── image2.jpg
-│ └── labels/
-│ ├── image1.txt
-│ ├── image2.txt
+│   ├── images/
+│   │   ├── image1.jpg
+│   └── labels/
+│       ├── image1.txt
 ├── valid/
-│ ├── images/
-│ └── labels/
+│   ├── images/
+│   └── labels/
 ├── test/
-│ ├── images/
-│ └── labels/
+│   ├── images/
+│   └── labels/
 └── data.yaml
+```
 
-* `data.yaml` contains paths and class names.
-* Output will be saved in `runs/detect/train/`.
+* `data.yaml` includes paths and class names.
+* Output is saved in: `runs/detect/train/`
 
 ---
 
 ## 🔄 Export to ONNX
 
-After training completes:
+After training is complete, export the best weights to ONNX format:
 
 ```bash
 yolo export model=runs/detect/train/weights/best.pt format=onnx
 ```
 
-This creates `best.onnx`.
+> This creates `best.onnx`.
 
 ---
 
-## ⚙️ Compile ONNX to Hailo `.hef`
+## ⚙️ Compile ONNX to Hailo .hef
 
-use run.sh
+Use the provided `run.sh` script to compile `best.onnx` into a `.hef` file compatible with Hailo-8L.
+
+---
 
 ## 🎯 Run Inference on Hailo-8L
 
-### Image Input:
-  install HailoRT .deb on the RPI.
-  sudo dpkg -i hailoRT<>.deb            In current RPI 4.20 version is installed
-  git clone https://github.com/hailo-ai/hailo-rpi5-examples.git
-  cd hailo-rpi5-examples
-  ./install.sh
-  source setup_env.sh
-### Webcam Input:
+### 🖼️ Image Input
+
+1. Install HailoRT on Raspberry Pi:
 
 ```bash
- python basic_pipelines/detection.py --input rpi --hef-path /path/to/yolov5st.hef
+sudo dpkg -i hailoRT<version>.deb
 ```
 
-📸 Outputs:
+(Current version: RPI 4.20)
 
-* Bounding boxes
-* Class labels ("Trash")
-* Confidence scores
+2. Clone and install Hailo examples:
+
+```bash
+git clone https://github.com/hailo-ai/hailo-rpi5-examples.git
+cd hailo-rpi5-examples
+./install.sh
+source setup_env.sh
+```
 
 ---
+
+### 📷 Webcam Input
+
+Run the detection pipeline using:
+
+```bash
+python basic_pipelines/detection.py --input rpi --hef-path /path/to/yolov5st.hef
+```
+
+---
+
+## 📸 Outputs
+
+* Bounding Boxes
+* Class Label: `Trash`
+* Confidence Scores
+
 ---
 
 ## 📌 Notes
 
-* Hailo-8L requires `.hef` format models.
-* Ultralytics makes ONNX export straightforward.
-* Roboflow is used for dataset preparation.
+* **Hailo-8L** requires models in `.hef` format.
+* **Ultralytics** supports easy ONNX export.
+* **Roboflow** is used for dataset preparation and annotation.
+
+---
+
+## 🧩 Dependencies Summary
+
+* Python 3.8+
+* PyTorch 1.9+
+* Ultralytics (YOLOv11)
+* HailoRT
+* ONNX Runtime (for testing ONNX before compiling)
+
+```
+
+Let me know if you'd like this in a downloadable `.md` file or want to include badge links, GitHub actions, or a `requirements.txt`.
+```
