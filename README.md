@@ -140,5 +140,5 @@ python basic_pipelines/detection.py --input rpi --hef-path /path/to/yolov5st.hef
 
 ```
 
-Let me know if you'd like this in a downloadable `.md` file or want to include badge links, GitHub actions, or a `requirements.txt`.
+Let me know if you face any issue
 ```
